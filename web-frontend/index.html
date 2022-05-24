@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.classless.min.css">
+  <title>Love is in the Stream</title>
+</head>
+<body>
+  <header>
+    <h1 style="display: flex;flex-direction: column;align-items: center;">🖤 Stream Some Love 🖤</h1>
+    <p>New data is streamed every second. Depending on your browser, the first chunk may take a while to fetch.</p>
+    <button id="start">Start Stream</button>
+    <button id="stop">Stop Stream</button>
+  </header>
+  <main style="padding: 0;display: flex;flex-direction: column;align-items: center;">
+  </main>
+
+  <script type="application/javascript">
+  let reader;
+  const stream = async (url) => {
+    const main = document.querySelector('main');
+    
+    const response = await fetch(url);
+    reader = response.body.getReader();
+    const decoder = new TextDecoder('utf-8'); // text is sent as byte array --> convert back to string
+    
+    while (true) {
+      const { value, done } = await reader.read(); //variable names are important for destructuring
+      console.log(decoder.decode(value));
+      if (done) break; // if done, value is undefined
+      main.insertAdjacentHTML('afterbegin', `<p style="font-size: 2rem">${decoder.decode(value)}</p>`);
+    }
+    
+    main.insertAdjacentHTML('afterbegin', `<p style="font-size: 1rem">-- End of the Stream --</p>`);
+  };
+  
+  document.querySelector('button#start').addEventListener('click', () => {
+    cancel()
+    stream('http://localhost:8877/');
+  });
+
+  document.querySelector('button#stop').addEventListener('click', () => cancel());
+
+const cancel = () => {
+    reader?.cancel();
+};
+
+</script>
+</body>
+</html>

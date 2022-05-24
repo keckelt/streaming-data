@@ -1,0 +1,14 @@
+version: '3'
+services:
+    backend:
+      build: ./py-backend
+      ports: 
+        - 8877:8877
+      volumes:
+      - ./py-backend:/code
+    frontend:
+      image: nginx
+      ports: 
+        - 80:80
+      volumes:
+      - ./web-frontend:/usr/share/nginx/html
