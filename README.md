@@ -1,5 +1,5 @@
 # Streaming Data
-## Python/FASTAPI ➡ Web/JS
+**Python/FASTAPI ➡ Web/JS**
 
 ## Usage
 ```
